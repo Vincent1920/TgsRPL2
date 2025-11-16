@@ -1,51 +1,65 @@
 <template>
-  <div class="flex justify-center items-center flex-grow">
-    <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center mb-6">Register</h2>
-      <form @submit.prevent="register">
-        <div class="mb-4">
-          <label class="block text-gray-700 mb-2">Nama Lengkap</label>
-          <input v-model="name" type="text" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+    <navbar />
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="flex bg-white shadow-xl rounded-lg overflow-hidden w-[90%] lg:w-[70%]">
+
+            <!-- LEFT FORM -->
+            <div class="w-full lg:w-1/2 bg-yellow-100 p-10 flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Register to Your Account</h2>
+                <p class="text-gray-600 mb-8">
+                    Please enter your credentials to access your dashboard.
+                </p>
+
+                <form @submit.prevent="register">
+                    <input v-model="nama" type="text" placeholder="Nama Lengkap"
+                        class="w-full px-4 py-2 rounded-md border focus:ring-2 focus:ring-yellow-400 mb-4" />
+
+                    <input v-model="email" type="email" placeholder="email"
+                        class="w-full px-4 py-2 rounded-md border focus:ring-2 focus:ring-yellow-400 mb-4" />
+
+                    <input v-model="password" type="password" placeholder="Password"
+                        class="w-full px-4 py-2 rounded-md border focus:ring-2 focus:ring-yellow-400 mb-4" />
+
+                    <input v-model="confirmPassword" type="password" placeholder="Konfirmasi Password"
+                        class="w-full px-4 py-2 rounded-md border focus:ring-2 focus:ring-yellow-400 mb-6" />
+
+                    <button type="submit"
+                        class="w-full bg-gray-800 hover:bg-black text-white py-2 rounded-md transition">
+                        Register
+                    </button>
+                </form>
+            </div>
+
+            <!-- RIGHT IMAGE PART -->
+            <div class="hidden lg:flex w-1/2 bg-[#8EC6DF] items-center justify-center p-6">
+                <img src="https://i.ibb.co/fYjxzPW/cat-study.png" alt="Cat Illustration" class="w-64" />
+            </div>
         </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 mb-2">Email</label>
-          <input v-model="email" type="email" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        </div>
-        <div class="mb-6">
-          <label class="block text-gray-700 mb-2">Password</label>
-          <input v-model="password" type="password" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        </div>
-        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded">Daftar</button>
-      </form>
-      <p class="text-center text-sm text-gray-600 mt-4">
-        Sudah punya akun?
-        <router-link to="/login" class="text-blue-600 hover:underline">Login</router-link>
-      </p>
     </div>
-  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
+    import Navbar from "@/Components/Navbar.vue";
+    import {
+        ref
+    } from "vue";
 
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const password_confirmation = ref('');
+    const nama = ref("");
+    const email = ref("");
+    const password = ref("");
+    const confirmPassword = ref("");
 
-const register = async () => {
-  try {
-    const response = await axios.post('/api/register', {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      password_confirmation: password_confirmation.value,
-    });
-    alert('Registrasi berhasil!');
-    console.log(response.data);
-  } catch (error) {
-    alert('Registrasi gagal: ' + error.response.data.message);
-  }
-};
+    const register = () => {
+        if (password.value !== confirmPassword.value) {
+            alert("Password dan Konfirmasi Password tidak cocok");
+            return;
+        }
+
+        // Proses register (nanti bisa kamu sambung ke API Laravel mu)
+        console.log("Register:", {
+            nama: nama.value,
+            email: email.value,
+            password: password.value,
+        });
+    };
 </script>

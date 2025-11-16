@@ -1,25 +1,30 @@
 <template>
-    <router-view v-slot="{ Component, route }">
-        <div :key="route.name">
-            <Component :is="Component" />
-        </div>
-    </router-view>
+  <router-view v-slot="{ Component, route }">
+    <div :key="route.name">
+      <Component :is="Component" />
+    </div>
+  </router-view>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { watch } from "vue";
 import { useRoute } from "vue-router";
-import Navbar from "./Components/Navbar.vue";
-// import ContactSection from "./Components/ContactSection.vue";
 
+// Detect route
 const route = useRoute();
-const isAuthPage = computed(() =>
-    ["login", "register"].includes(route.name)
+
+// Update title automatically
+watch(
+  () => route.name,
+  (newName) => {
+    document.title = newName
+      ? `${capitalize(newName)} | RememberME`
+      : "RememberME";
+  },
+  { immediate: true }
 );
 
-const mainClasses = computed(() =>
-    isAuthPage.value
-        ? "max-w-screen-xl mx-auto min-h-screen"
-        : "max-w-screen-xl mx-auto p-4 pt-15 min-h-screen"
-);
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 </script>

@@ -3,6 +3,7 @@ import Login from '../Pages/Login.vue'
 import Register from '../Pages/Register.vue'
 import Kategori from '../Pages/Kategori.vue'
 import home from '../Pages/home.vue'
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // import home from '../Pages/home.vue'
 const routes = [
