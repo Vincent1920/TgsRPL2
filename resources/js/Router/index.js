@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../Pages/Login.vue'
-import Register from '../Pages/Register.vue'
+import Login from '../Auth/Login.vue'
+import Register from '../Auth/Register.vue'
 import Kategori from '../Pages/Kategori.vue'
 import home from '../Pages/home.vue'
 import "@fortawesome/fontawesome-free/css/all.min.css";

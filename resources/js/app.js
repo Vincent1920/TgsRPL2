@@ -1,9 +1,16 @@
 import './bootstrap';
 import "../css/app.css";
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './Router/index.js';
 
-createApp(App)
-  .use(router)
-  .mount('#app');
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+
+import App from './App.vue';
+import router from './Router';
+
+const app = createApp(App);
+
+const pinia = createPinia();
+app.use(pinia);      // <-- WAJIB, HARUS ADA
+app.use(router);
+
+app.mount('#app');

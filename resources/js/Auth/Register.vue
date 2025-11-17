@@ -4,14 +4,14 @@
         <div class="flex bg-white shadow-xl rounded-lg overflow-hidden w-[90%] lg:w-[70%]">
 
             <!-- LEFT FORM -->
-            <div class="w-full lg:w-1/2 bg-yellow-100 p-10 flex flex-col justify-center">
+            <div class="w-full lg:w-1/2 bg-[#FFFCE7] p-10 flex flex-col justify-center">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Register to Your Account</h2>
                 <p class="text-gray-600 mb-8">
                     Please enter your credentials to access your dashboard.
                 </p>
 
                 <form @submit.prevent="register">
-                    <input v-model="nama" type="text" placeholder="Nama Lengkap"
+                    <input v-model="name" type="text" placeholder="Nama Lengkap"
                         class="w-full px-4 py-2 rounded-md border focus:ring-2 focus:ring-yellow-400 mb-4" />
 
                     <input v-model="email" type="email" placeholder="email"
@@ -37,29 +37,36 @@
         </div>
     </div>
 </template>
-
 <script setup>
-    import Navbar from "@/Components/Navbar.vue";
-    import {
-        ref
-    } from "vue";
+import { useAuthStore } from "@/Stores/authStore";
+import Navbar from "@/Components/Navbar.vue";
+import { ref } from "vue";
 
-    const nama = ref("");
-    const email = ref("");
-    const password = ref("");
-    const confirmPassword = ref("");
+const auth = useAuthStore(); // <-- PENTING!!!
 
-    const register = () => {
-        if (password.value !== confirmPassword.value) {
-            alert("Password dan Konfirmasi Password tidak cocok");
-            return;
-        }
+const name = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
 
-        // Proses register (nanti bisa kamu sambung ke API Laravel mu)
-        console.log("Register:", {
-            nama: nama.value,
-            email: email.value,
-            password: password.value,
-        });
-    };
+const register = async () => {
+    if (password.value !== confirmPassword.value) {
+        alert("Password dan Konfirmasi Password tidak cocok");
+        return;
+    }
+
+    const success = await auth.register({
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        password_confirmation: confirmPassword.value,
+    });
+
+    if (success) {
+        alert("Register berhasil!");
+    } else {
+        console.log("Error:", auth.errors);
+        alert("Register gagal");
+    }
+};
 </script>
