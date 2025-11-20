@@ -11,3 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::fallback(function () {
     return view('welcome');
 });
+
+Route::get('/cek-session', function () {
+    return session()->all();
+});

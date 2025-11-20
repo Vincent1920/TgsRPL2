@@ -14,3 +14,7 @@ app.use(pinia);      // <-- WAJIB, HARUS ADA
 app.use(router);
 
 app.mount('#app');
+
+// onMounted(() => {
+//     auth.tryAutoLogin(); // 🔥 wajib agar user login setelah refresh
+// });

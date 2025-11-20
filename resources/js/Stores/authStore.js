@@ -64,8 +64,11 @@ const login = async (credentials) => {
 
         token.value = response.data.token;
         user.value = response.data.user;
-
+        console.log(user); 
+        console.log(response);
         localStorage.setItem("authToken", token.value);
+        localStorage.setItem("name",response.data.user.name)
+        localStorage.setItem("email",response.data.user.email)
         setAxiosHeader();
 
         return true;
