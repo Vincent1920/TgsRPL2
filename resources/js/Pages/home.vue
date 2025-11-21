@@ -7,15 +7,15 @@
 
                 <div class="w-full md:w-1/2 flex flex-col items-center text-center">
                     <h1 class="text-3xl md:text-4xl font-bold text-blue-700 mb-6 font-poppins">
-                        Remember ME
+                      Never Forget Again!
                     </h1>
                     <div class="relative">
-                        <img src="https://i.imgur.com/1J4XJ6L.png" alt="Cat Reminder"
+                        <img src="../assets/logo.png" alt="Cat Reminder"
                             class="w-64 md:w-80 lg:w-96 object-contain drop-shadow-xl" />
 
-                        <div class="absolute -top-4 right-10 w-8 h-8 bg-blue-100 rounded-full opacity-50 animate-pulse">
+                        <div class="absolute -top-4 right-10 w-8 h-8 bg-blue-100 rounded-full opacity-50 animate-bounce">
                         </div>
-                        <div class="absolute -top-8 right-4 w-4 h-4 bg-blue-100 rounded-full opacity-50 animate-bounce">
+                        <div class="absolute -top-8 right-4 w-4 h-4 bg-blue-300 rounded-full opacity-50 animate-bounce">
                         </div>
                     </div>
                 </div>
