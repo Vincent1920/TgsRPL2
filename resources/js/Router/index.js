@@ -7,6 +7,7 @@ import Register from '../Auth/Register.vue'
 import Kategori from '../Pages/Kategori.vue'
 import home from '../Pages/home.vue'
 import tugas from '../Pages/tugas.vue'
+import history from '../Pages/history.vue'
 import CreateTugasPage from '../Public/CreateTugasPage.vue'
 import CreateKategoriPage from '../Public/CreateKategoriPage.vue'
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -39,7 +40,14 @@ const routes = [
     path: '/tugas', 
     name: 'tugas',
     component: tugas,
-    meta: { requiresAuth: true } // <--- KUNCI HALAMAN INI (Wajib Login)
+    meta: { requiresAuth: true } // <---  Wajib Login
+  },
+  { 
+    path: '/history', 
+    name: 'history',
+    component: history,
+    meta: { requiresAuth: true } // <---  Wajib Login
+    
   },
   { 
     path: '/Create_Tugas', 
