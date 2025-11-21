@@ -106,26 +106,19 @@
         </template>
     </div>
 </template>
-
 <script setup>
-    import {
-        ref
-    } from "vue";
-    import {
-        useAuthStore
-    } from "@/Stores/authStore";
-    import {
-        storeToRefs
-    } from "pinia";
+    import { ref } from "vue";
+    import { useAuthStore } from "@/Stores/authStore";
+    import { storeToRefs } from "pinia";
+    import { useRouter } from "vue-router"; // 1. JANGAN LUPA IMPORT INI
 
     const menuOpen = ref(false);
     const dropdownOpen = ref(false);
 
     const auth = useAuthStore();
-    const {
-        user,
-        isAuthenticated
-    } = storeToRefs(auth);
+    const router = useRouter(); // 2. DEFINISIKAN ROUTER
+    
+    const { user, isAuthenticated } = storeToRefs(auth);
 
     const toggleMenu = () => {
         menuOpen.value = !menuOpen.value;
@@ -136,9 +129,15 @@
     };
 
     const logout = () => {
-        auth.logout();
+        // 1. Hapus data sesi di store
+        auth.logout(); 
+        
+        // 2. Tutup menu/dropdown
         menuOpen.value = false;
         dropdownOpen.value = false;
+
+        // 3. PAKSA PINDAH KE HALAMAN LOGIN (Ini yang kurang)
+        router.push("/login");
     };
 
     // Ambil data dari localStorage (sesuai kode Anda)
