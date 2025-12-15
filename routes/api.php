@@ -10,5 +10,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/Create_Tugas',[TugasController::class,'CreateTugas']);
     Route::post('/kategori',[KategoriController::class,'store']);
+    Route::get('/kategori', [KategoriController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });

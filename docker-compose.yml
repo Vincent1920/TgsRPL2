@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"     
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./app:/var/www/html:ro
+    depends_on:
+      - php
+    networks:
+      - backend
+
+  php:
+    image: php:8.2-fpm-alpine
+    container_name: php-fpm
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0-oraclelinux8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: bd-rememberME
+      MYSQL_USER: rememberME
+      MYSQL_PASSWORD: PwRememberME
+    ports:
+      - "3306:3306"    
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  db_data:
+
+networks:
+  backend:

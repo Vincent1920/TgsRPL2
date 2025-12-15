@@ -14,16 +14,17 @@ class KategoriController extends Controller
     /**
      * Menampilkan semua data kategori
      */
-    public function index()
-    {
-        $kategori = kategori::latest()->get();
+   public function index(Request $request)
+{
+    // Ambil kategori milik user yang sedang login saja
+    $kategori = kategori::where('id_user', $request->user()->id)->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Daftar Data Kategori',
-            'data'    => $kategori
-        ], 200);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'List Data Kategori',
+        'data'    => $kategori
+    ], 200);
+}
 
     /**
      * Menyimpan data kategori baru
