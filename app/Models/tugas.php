@@ -20,4 +20,12 @@ class Tugas extends Model
         'prioritas',
         'tugas',
     ];
+
+    // app/Models/Tugas.php
+
+public function kategori()
+{
+    // Sesuaikan 'id_kategori' dengan nama kolom foreign key di tabel tugas Anda
+    return $this->belongsTo(Kategori::class, 'id_kategori');
+}
 }
