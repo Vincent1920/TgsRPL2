@@ -20,6 +20,7 @@ class Tugas extends Model
         'prioritas',
         'tugas',
         'is_done',
+        'its_over',
     ];
 
     // app/Models/Tugas.php

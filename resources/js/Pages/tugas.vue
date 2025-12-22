@@ -58,24 +58,25 @@
         ]">
 
                 <div class="absolute top-0 left-0 z-10">
-                    <div class="backdrop-blur-sm px-5 py-3 rounded-br-[30px] flex items-center gap-3 shadow-sm"
-                        :style="task.prioritas === 'ya' ? 'background-color: #FFDF5E' : 'background-color: rgba(255, 255, 255, 0.9)'">
-                        <CalendarDaysIcon class="w-5 h-5"
+                    <div class="backdrop-blur-sm px-5 py-3 rounded-br-[35px] flex items-center gap-3 shadow-sm transition-colors duration-300"
+                        :style="{ backgroundColor: task.prioritas === 'ya' ? '#FFD83A' : 'rgba(255, 255, 255, 0.9)' }">
+                        
+                        <CalendarDaysIcon class="w-5 h-5" 
                             :class="task.prioritas === 'ya' ? 'text-black' : 'text-gray-600'" />
-                        <span class="font-bold font-sans text-xs"
+                        
+                        <span class="font-bold font-sans text-xs" 
                             :class="task.prioritas === 'ya' ? 'text-black' : 'text-gray-700'">
-                            {{ task.tanggal }}
+                            {{ formatDateTime(task.tanggal) }}
                         </span>
                     </div>
                 </div>
 
-                <div class="absolute top-5 right-6 z-20">
-                    <div class="cursor-pointer" @click="toggleCheck(task)">
-                        <CheckIcon v-if="task.is_done" class="w-10 h-10 text-blue-600 font-bold" />
-                        <XMarkIcon v-else-if="new Date(task.tanggal).setHours(0,0,0,0) < new Date().setHours(0,0,0,0)"
-                            class="w-10 h-10 text-red-600 font-bold" />
+                <div class="absolute top-5 right-8 z-20">
+                    <div class="cursor-pointer transition-transform active:scale-90" @click="toggleCheck(task)">
+                        <CheckIcon v-if="task.is_done" class="w-12 h-12 text-blue-600 drop-shadow-md" />
+                        <XMarkIcon v-else-if="task.its_over" class="w-12 h-12 text-red-600 drop-shadow-md" />
                         <div v-else
-                            class="w-8 h-8 bg-white border-2 border-gray-800 rounded-xl flex items-center justify-center transition-transform active:scale-90 shadow-sm">
+                            class="w-9 h-9 bg-white border-2 border-gray-800 rounded-2xl shadow-sm flex items-center justify-center">
                         </div>
                     </div>
                 </div>
@@ -144,6 +145,17 @@
         await tugasStore.fetchTugas();
         console.log("Data Tugas dari Store:", tugasList.value);
     });
+    const formatDateTime = (dateTimeString) => {
+        if (!dateTimeString) return "";
+        const date = new Date(dateTimeString);
+        return date.toLocaleString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).replace(/\//g, '-');
+    };
     const filterDropdownOpen = ref(false);
     const selectedCategories = ref([]);
     const filterDate = ref({
@@ -207,46 +219,37 @@
         }
     };
     const filteredTasks = computed(() => {
-    // 1. Pastikan data adalah array
-    let list = Array.isArray(tugasList.value) ? [...tugasList.value] : [];
+        let list = Array.isArray(tugasList.value) ? [...tugasList.value] : [];
 
-    // --- PERBAIKAN LOGIKA DISINI ---
-    // Jangan tampilkan tugas yang SUDAH diceklis (is_done === true)
-    // Halaman ini hanya untuk tugas yang BELUM selesai.
-    list = list.filter(t => !t.is_done); 
-    // -------------------------------
+        // Filter 1: Sembunyikan yang sudah dicentang (is_done) 
+        // DAN sembunyikan yang sudah gagal/lewat (its_over) jika Anda ingin halaman utama benar-benar bersih
+        list = list.filter(t => !t.is_done && !t.its_over);
 
-    // Filter Kategori (Logika lama Anda)
-    if (selectedCategories.value.length > 0) {
-        list = list.filter(t => selectedCategories.value.includes(t.id_kategori));
-    }
-    
-    // Filter Rentang Tanggal (Logika lama Anda)
-    if (filterDate.value.start) {
-        list = list.filter(t => t.tanggal >= filterDate.value.start);
-    }
-    if (filterDate.value.end) {
-        list = list.filter(t => t.tanggal <= filterDate.value.end);
-    }
+        // Filter Kategori & Tanggal tetap sama
+        if (selectedCategories.value.length > 0) {
+            list = list.filter(t => selectedCategories.value.includes(t.id_kategori));
+        }
 
-    // Urutkan: Prioritas 'ya' di atas, lalu tanggal terbaru
-    return list.sort((a, b) => {
-        if (a.prioritas === 'ya' && b.prioritas !== 'ya') return -1;
-        if (a.prioritas !== 'ya' && b.prioritas === 'ya') return 1;
-        return new Date(b.tanggal) - new Date(a.tanggal);
+        // Urutkan Prioritas "ya" di atas
+        return list.sort((a, b) => {
+            if (a.prioritas === 'ya' && b.prioritas !== 'ya') return -1;
+            if (a.prioritas !== 'ya' && b.prioritas === 'ya') return 1;
+            return new Date(b.tanggal) - new Date(a.tanggal);
+        });
     });
-});
 </script>
 
 <style scoped>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Kaushan+Script&display=swap');
 
     .font-kaushan {
-        font-family: 'Kaushan Script', cursive;
+        font-family: 'Segoe Print', cursive;
+        /* font-family: 'Kaushan Script', cursive; */
     }
 
     .font-dancing {
-        font-family: 'Dancing Script', cursive;
+        font-family: 'Sanchez', cursive;
+        /* font-family: 'Dancing Script', cursive; */
     }
 
     .font-poppins {

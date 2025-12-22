@@ -10,25 +10,35 @@ use Exception;
 class TugasController extends Controller
 {
 
-    public function getTugas(Request $request)
-    {
-        try {
-            // Mengambil tugas milik user login beserta data kategorinya
-            $tugas = Tugas::with('kategori')
-                ->where('id_user', $request->user()->id)
-                ->get();
+   public function getTugas(Request $request)
+{
+    $now = now(); // Mengambil waktu server saat ini (WIB/sesuai config)
 
-            return response()->json([
-                'success' => true,
-                'data'    => $tugas
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
+    $tugas = Tugas::with('kategori')
+        ->where('id_user', $request->user()->id)
+        ->get()
+        ->map(function ($item) use ($now) {
+            // LOGIKA: Jika waktu server sudah melewati tanggal tugas 
+            // DAN tugas belum selesai (is_done masih 0)
+            if ($item->tanggal < $now && !$item->is_done) {
+                // Jika di DB masih 0, maka update jadi 1
+                if (!$item->its_over) {
+                    $item->update(['its_over' => true]);
+                }
+            } else {
+                // Jika ternyata tanggal diubah jadi masa depan, kembalikan ke 0
+                if ($item->its_over) {
+                    $item->update(['its_over' => false]);
+                }
+            }
+            return $item;
+        });
+
+    return response()->json([
+        'success' => true,
+        'data' => $tugas
+    ]);
+}
     // TugasController.php
         public function updateStatus(Request $request, $id)
         {
