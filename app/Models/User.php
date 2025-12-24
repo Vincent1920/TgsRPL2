@@ -59,4 +59,5 @@ public function tugas()
     // Parameter ke-2 'id_user' wajib ditulis karena kamu tidak pakai default 'user_id'
     return $this->hasMany(tugas::class, 'id_tugas');
 }
+
 }

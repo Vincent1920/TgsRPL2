@@ -10,7 +10,7 @@ class Tugas extends Model
     use HasFactory;
 
     // Nama tabel di database
-    protected $table = 'tugas';
+   protected $table = 'tugas';
 
     // Field yang boleh diisi
     protected $fillable = [
@@ -25,6 +25,14 @@ class Tugas extends Model
 
     // app/Models/Tugas.php
 
+
+    public function user()
+    {
+        // Hubungkan id_user di tabel tugas ke id di tabel users
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+   
 public function kategori()
 {
     // Sesuaikan 'id_kategori' dengan nama kolom foreign key di tabel tugas Anda

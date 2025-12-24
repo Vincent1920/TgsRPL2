@@ -9,3 +9,5 @@ Untuk Cek Status
 
 Cari tulisan allowPublicKeyRetrieval.
 Ubah false menjadi true.
+
+php artisan app:send-task-reminders
